@@ -1,4 +1,4 @@
-package com.hofuri.cp.task.config;
+package com.hofuri.cp.config;
 
 import java.net.MalformedURLException;
 import java.net.URL;

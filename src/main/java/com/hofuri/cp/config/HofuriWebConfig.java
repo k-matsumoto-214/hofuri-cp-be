@@ -1,4 +1,4 @@
-package com.hofuri.cp.task.config;
+package com.hofuri.cp.config;
 
 import java.text.NumberFormat;
 import java.text.ParseException;

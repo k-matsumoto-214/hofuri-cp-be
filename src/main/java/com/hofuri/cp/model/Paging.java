@@ -1,4 +1,4 @@
-package com.hofuri.cp.task.model;
+package com.hofuri.cp.model;
 
 import lombok.AccessLevel;
 import lombok.Builder;

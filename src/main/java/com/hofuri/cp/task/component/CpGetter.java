@@ -1,10 +1,10 @@
 package com.hofuri.cp.task.component;
 
+import com.hofuri.cp.config.HofuriWebConfig;
+import com.hofuri.cp.config.WebDriverConfig;
 import com.hofuri.cp.model.CpInfoList;
+import com.hofuri.cp.model.Paging;
 import com.hofuri.cp.model.dto.CpWebDto;
-import com.hofuri.cp.task.config.HofuriWebConfig;
-import com.hofuri.cp.task.config.WebDriverConfig;
-import com.hofuri.cp.task.model.Paging;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +69,7 @@ public class CpGetter {
           // 表示されている要素を取得する
           cpWebDtos.addAll(
               this.getCpInfoInPage(webDriver, paging.numberInSpecificPage(pageNumber), date));
-          
+
         } catch (InterruptedException e) {
           log.info("割り込み例外が発生 {}", e.toString());
           Thread.currentThread().interrupt();
