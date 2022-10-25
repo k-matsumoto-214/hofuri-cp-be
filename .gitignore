@@ -33,7 +33,7 @@ build/
 .vscode/
 
 ### config ###
-config
+config/
 
 ### mac ###
 .DS_Store
