@@ -13,7 +13,7 @@ public interface CpRepository {
    * @param to   終了日
    * @return CP残高の統計ドメイン
    */
-  CpDailyAmountList findCpAmountBetweenDate(LocalDate from, LocalDate to);
+  CpDailyAmountList fetchDailyCpAmountBetweenDate(LocalDate from, LocalDate to);
 
   /**
    * CP情報をDBに登録します

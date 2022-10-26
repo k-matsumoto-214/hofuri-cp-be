@@ -10,9 +10,9 @@
     <result property="date" column="DATE"/>
   </resultMap>
 
-  <select id="findCpAmountBetweenDate" resultMap="CpDailyAmountDto">
+  <select id="fetchDailyCpAmountBetweenDate" resultMap="CpDailyAmountDto">
     <!-- 指定した期間に発行残高があった発行体の名前リストと、発行残高が1発行体でもあった日付リストを直積して
-         指定した期間の各発行体の発行残高を集計する -->
+         指定した期間の各発行体の発行残高を集計する。該当日に発行がない場合は残高0となる。 -->
     SELECT
     NAME.NAME,
     MAIN.AMOUNT,
@@ -54,8 +54,7 @@
 
   <insert id="upsert">
     INSERT INTO CP
-    (
-    ISIN_CODE,
+    (ISIN_CODE,
     ISSUER_CODE,
     NAME,
     BOND_UNIT,
@@ -73,8 +72,7 @@
     CURRENT_TIMESTAMP(),
     CURRENT_TIMESTAMP()
     )
-    ON DUPLICATE KEY
-    UPDATE
+    ON DUPLICATE KEY UPDATE
     UPDATED_AT = CURRENT_TIMESTAMP()
   </insert>
 </mapper>

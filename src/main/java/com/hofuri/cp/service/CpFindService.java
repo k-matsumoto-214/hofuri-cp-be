@@ -14,8 +14,8 @@ public class CpFindService {
   private final CpRepository cpRepository;
 
   @Retryable
-  public CpDailyAmountList findCpAmountBetweenDate(LocalDate from, LocalDate to) {
-    return cpRepository.findCpAmountBetweenDate(from, to);
+  public CpDailyAmountList fetchDailyCpAmountBetweenDate(LocalDate from, LocalDate to) {
+    return cpRepository.fetchDailyCpAmountBetweenDate(from, to);
   }
 
 }

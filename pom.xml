@@ -23,13 +23,13 @@
     <mysql-connector-java.version>8.0.30</mysql-connector-java.version>
     <selenium.version>4.5.0</selenium.version>
     <spring-retry.version>1.3.3</spring-retry.version>
+    <spring-validation.version>2.7.5</spring-validation.version>
     <spock.version>2.3-groovy-4.0</spock.version>
     <groovy-all.version>4.0.6</groovy-all.version>
     <h2.version>2.1.214</h2.version>
     <dbunit.version>2.7.3</dbunit.version>
     <spring-dbunit.version>1.3.0</spring-dbunit.version>
     <mybatis-test.version>2.2.2</mybatis-test.version>
-    <spring-validation.version>2.7.5</spring-validation.version>
   </properties>
 
   <dependencies>
@@ -180,12 +180,6 @@
       <version>${mybatis-test.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>RELEASE</version>
-      <scope>compile</scope>
-    </dependency>
 
   </dependencies>
 
@@ -196,12 +190,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <excludes>
-            <exclude>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-            </exclude>
-          </excludes>
           <executable>true</executable>
         </configuration>
       </plugin>

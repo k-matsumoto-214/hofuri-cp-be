@@ -11,5 +11,5 @@ public interface CpMapper {
 
   void upsert(CpInfo cpInfo);
 
-  List<CpDailyAmountDto> findCpAmountBetweenDate(LocalDate from, LocalDate to);
+  List<CpDailyAmountDto> fetchDailyCpAmountBetweenDate(LocalDate from, LocalDate to);
 }

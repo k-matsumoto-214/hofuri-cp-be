@@ -1,0 +1,34 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    uses: ./.github/workflows/maven-test.yml
+  deploy:
+    needs: [ test ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Execute ssh
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          host: ${{secrets.SSH_HOST}}
+          username: ${{secrets.SSH_USERNAME}}
+          port: ${{secrets.SSH_PORT}}
+          script: |
+            cd ~/repository/hofuricp-be
+            git pull origin main
+            mvn -B package -DskipTests --file pom.xml
+            cd ~/repository/hofuricp-be/target
+            systemctl --user restart hofuricp-be
+          
+          
+            

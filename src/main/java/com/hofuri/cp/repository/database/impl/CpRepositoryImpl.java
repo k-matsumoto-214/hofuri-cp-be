@@ -17,8 +17,8 @@ public class CpRepositoryImpl implements CpRepository {
   private final CpMapper cpMapper;
 
   @Override
-  public CpDailyAmountList findCpAmountBetweenDate(LocalDate from, LocalDate to) {
-    List<CpDailyAmountDto> cpDailyAmountDtos = cpMapper.findCpAmountBetweenDate(from, to);
+  public CpDailyAmountList fetchDailyCpAmountBetweenDate(LocalDate from, LocalDate to) {
+    List<CpDailyAmountDto> cpDailyAmountDtos = cpMapper.fetchDailyCpAmountBetweenDate(from, to);
     return CpDailyAmountList.from(cpDailyAmountDtos);
   }
 

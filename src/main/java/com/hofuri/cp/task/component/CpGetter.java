@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,6 +29,7 @@ public class CpGetter {
    *
    * @return CP情報のリストドメイン
    */
+  @Retryable
   public CpInfoList getCpInfoList() {
     // 結果返却用のリストを定義
     List<CpWebDto> cpWebDtos = new ArrayList<>();
@@ -99,43 +101,40 @@ public class CpGetter {
   private List<CpWebDto> getCpInfoInPage(WebDriver webDriver, int numberInPage, LocalDate date) {
 
     List<CpWebDto> results = new ArrayList<>();
+
     // 1ページに含まれる要素数分ループ（要素取得の際のカウントは0から）
     for (int repeatNumber = 0; repeatNumber < numberInPage; repeatNumber++) {
-      try {
-        // 発行体名の取得
-        String name = webDriver
-            .findElement(hofuriWebConfig.nameSelector(repeatNumber))
-            .getText();
 
-        // ISINCodeの取得
-        String isinCode = webDriver
-            .findElement(hofuriWebConfig.isinCodeSelector(repeatNumber))
-            .getText();
+      // 発行体名の取得
+      String name = webDriver
+          .findElement(hofuriWebConfig.nameSelector(repeatNumber))
+          .getText();
 
-        //発行体コードの取得
-        String issuerCode = hofuriWebConfig.parseIssuerCode(isinCode);
+      // ISINCodeの取得
+      String isinCode = webDriver
+          .findElement(hofuriWebConfig.isinCodeSelector(repeatNumber))
+          .getText();
 
-        // 各社債の金額取得
-        String bondUnitString = webDriver
-            .findElement(hofuriWebConfig.bondUnitSelector(repeatNumber))
-            .getText();
-        int bondUnit = hofuriWebConfig.parseBondUnit(bondUnitString);
+      //発行体コードの取得
+      String issuerCode = hofuriWebConfig.parseIssuerCode(isinCode);
 
-        // 発行総額の取得
-        String amountString = webDriver
-            .findElement(hofuriWebConfig.amountSelector(repeatNumber))
-            .getText();
-        int amount = hofuriWebConfig.parseCpAmount(amountString);
+      // 各社債の金額取得
+      String bondUnitString = webDriver
+          .findElement(hofuriWebConfig.bondUnitSelector(repeatNumber))
+          .getText();
+      int bondUnit = hofuriWebConfig.parseBondUnit(bondUnitString);
 
-        // CP情報のDTOを生成し結果配列に格納
-        CpWebDto dto = CpWebDto.of(name, issuerCode, isinCode, bondUnit, amount, date);
-        results.add(dto);
+      // 発行総額の取得
+      String amountString = webDriver
+          .findElement(hofuriWebConfig.amountSelector(repeatNumber))
+          .getText();
+      int amount = hofuriWebConfig.parseCpAmount(amountString);
 
-      } catch (Exception e) {
-        log.info("CP情報取得中に例外が発生しました。 {}", e.toString());
-        return results;
-      }
+      // CP情報のDTOを生成し結果配列に格納
+      CpWebDto dto = CpWebDto.of(name, issuerCode, isinCode, bondUnit, amount, date);
+      results.add(dto);
     }
+
     return results;
   }
 
