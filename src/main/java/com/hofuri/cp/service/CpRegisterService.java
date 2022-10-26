@@ -3,6 +3,7 @@ package com.hofuri.cp.service;
 import com.hofuri.cp.model.CpInfo;
 import com.hofuri.cp.repository.database.CpRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +17,7 @@ public class CpRegisterService {
    *
    * @param cpInfo CPドメイン
    */
+  @Retryable
   public void registerCp(CpInfo cpInfo) {
     cpRepository.upsert(cpInfo);
   }

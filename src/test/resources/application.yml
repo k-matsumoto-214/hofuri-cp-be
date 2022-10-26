@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: test
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DATABASE_TO_LOWER=TRUE;MODE=MySQL
+    username: sa
+    password:
+  sql:
+    init:
+      enabled: true
+      schema-locations: classpath:h2/schema.sql
+
+mybatis:
+  mapper-locations: classpath*:/sql/*.xml
+
+selenium:
+  host: 0000
+
+cron:
+  get-cp-balance: "* 59 6,12 * 11 *"

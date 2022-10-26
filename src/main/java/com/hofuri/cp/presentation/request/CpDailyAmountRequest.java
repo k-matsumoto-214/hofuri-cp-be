@@ -9,7 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CpAmountRequest {
+public class CpDailyAmountRequest {
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   @NotNull()
