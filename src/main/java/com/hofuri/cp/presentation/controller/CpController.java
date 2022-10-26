@@ -21,7 +21,7 @@ public class CpController {
    * @param request 日次残高取得リクエスト
    * @return 指定した期間の各発行体の日次残高レスポンス
    */
-  @GetMapping("cp/amount")
+  @GetMapping("/cp/amount")
   public CpDailyAmountResponse fetchDailyCpAmountBetweenDate(@Valid CpDailyAmountRequest request) {
 
     CpDailyAmountList cpDailyAmountList =

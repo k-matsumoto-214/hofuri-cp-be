@@ -69,4 +69,19 @@ class CpGetterSpec extends Specification {
         actual.getCpInfos().get(4).getIsinCode() == "isinCode4"
 
     }
+
+    def "getCpInfoList_例外発生3回リトライ"() {
+        setup:
+        3 * webDriverConfig.getWebDriver() >> Mock(RemoteWebDriver)
+        3 * hofuriWebConfig.firstCpPageUrl() >> {
+            throw new RuntimeException()
+        }
+
+        when:
+        def actual = cpGetter.getCpInfoList()
+
+        then:
+        thrown(RuntimeException)
+
+    }
 }
