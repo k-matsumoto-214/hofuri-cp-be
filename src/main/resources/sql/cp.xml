@@ -75,4 +75,21 @@
     ON DUPLICATE KEY UPDATE
     UPDATED_AT = CURRENT_TIMESTAMP()
   </insert>
+
+  <resultMap id="CpTotalAmountDto" type="com.hofuri.cp.repository.database.entity.CpTotalAmountDto">
+    <id property="date" column="DATE"/>
+    <result property="amount" column="AMOUNT"/>
+  </resultMap>
+
+  <select id="fetchTotalCpAmountBetweenDate" resultMap="CpTotalAmountDto">
+    <!-- 指定した期間のCPの総発行残高を日付ごとに取得する -->
+    SELECT
+    DATE,
+    SUM(AMOUNT) AS AMOUNT
+    FROM CP
+    WHERE
+    DATE
+    BETWEEN #{from} AND #{to}
+    GROUP BY DATE
+  </select>
 </mapper>

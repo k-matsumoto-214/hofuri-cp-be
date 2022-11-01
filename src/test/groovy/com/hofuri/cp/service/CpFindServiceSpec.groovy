@@ -1,6 +1,7 @@
 package com.hofuri.cp.service
 
 import com.hofuri.cp.model.statistic.daily.CpDailyAmountList
+import com.hofuri.cp.model.statistic.daily.CpTotalAmountList
 import com.hofuri.cp.repository.database.CpRepository
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,6 +45,38 @@ class CpFindServiceSpec extends Specification {
         when:
         def actual =
                 cpFindService.fetchDailyCpAmountBetweenDate(
+                        GroovyMock(LocalDate),
+                        GroovyMock(LocalDate))
+
+        then:
+        thrown(RuntimeException)
+
+    }
+
+    def "fetchTotalCpAmountBetweenDate_正常"() {
+        setup:
+        1 * cpRepository.fetchTotalCpAmountBetweenDate(*_) >> Mock(CpTotalAmountList)
+
+        when:
+        def actual =
+                cpFindService.fetchTotalCpAmountBetweenDate(
+                        GroovyMock(LocalDate),
+                        GroovyMock(LocalDate))
+
+        then:
+        noExceptionThrown()
+
+    }
+
+    def "fetchTotalCpAmountBetweenDate_例外発生_3回リトライ"() {
+        setup:
+        3 * cpRepository.fetchTotalCpAmountBetweenDate(*_) >> {
+            throw new RuntimeException()
+        }
+
+        when:
+        def actual =
+                cpFindService.fetchTotalCpAmountBetweenDate(
                         GroovyMock(LocalDate),
                         GroovyMock(LocalDate))
 
