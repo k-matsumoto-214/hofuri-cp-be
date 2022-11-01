@@ -2,7 +2,6 @@ package com.hofuri.cp.model.statistic.daily;
 
 import com.hofuri.cp.repository.database.entity.CpDailyAmountDto;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -33,7 +32,7 @@ public class CpDailyAmountList {
     // 各日付でソートした上で各日付ごとの残高リストをもつドメインのリストを作成する
     List<CpDailyAmount> cpDailyAmounts = cpDailyAmountDtosGroupingByDate.entrySet()
         .stream()
-        .sorted(Comparator.comparing(Entry::getKey))
+        .sorted(Entry.comparingByKey())
         .map(entry -> CpDailyAmount.of(entry.getKey(), entry.getValue()))
         .collect(Collectors.toUnmodifiableList());
 

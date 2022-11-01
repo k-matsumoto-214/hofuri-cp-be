@@ -64,4 +64,41 @@ class CpRepositoryImplSpec extends Specification {
         noExceptionThrown()
         actual.getCpDailyAmounts().isEmpty()
     }
+
+    @DatabaseSetup(
+            value = "/h2/data/cprepository/fetchTotalCpAmountBetweenDate/input",
+            type = DatabaseOperation.CLEAN_INSERT
+    )
+    def "fetchTotalCpAmountBetweenDate_DBから集計できる"() {
+        setup:
+        def from = LocalDate.of(2022, 10, 21)
+        def to = LocalDate.of(2022, 10, 25)
+
+        when:
+        def actual = cpRepository.fetchTotalCpAmountBetweenDate(from, to)
+
+        then:
+        noExceptionThrown()
+        actual.getCpTotalAmounts().get(0).getDate() == from
+        actual.getCpTotalAmounts().get(2).getDate() == to
+        actual.getCpTotalAmounts().get(0).getAmount() == 15000
+        actual.getCpTotalAmounts().get(2).getAmount() == 6000
+    }
+
+    @DatabaseSetup(
+            value = "/h2/data/cprepository/fetchTotalCpAmountBetweenDate/input",
+            type = DatabaseOperation.CLEAN_INSERT
+    )
+    def "fetchTotalCpAmountBetweenDate_DBに集計対象データがない"() {
+        setup:
+        def from = LocalDate.of(2999, 10, 21)
+        def to = LocalDate.of(2999, 10, 25)
+
+        when:
+        def actual = cpRepository.fetchTotalCpAmountBetweenDate(from, to)
+
+        then:
+        noExceptionThrown()
+        actual.getCpTotalAmounts().isEmpty()
+    }
 }
