@@ -14,7 +14,7 @@ public class CpTotalAmountRequest {
 
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @NotNull()
+  @NotNull
   private LocalDate from;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")

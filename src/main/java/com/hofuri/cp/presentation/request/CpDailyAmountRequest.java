@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class CpDailyAmountRequest {
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @NotNull()
+  @NotNull
   private LocalDate from;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
