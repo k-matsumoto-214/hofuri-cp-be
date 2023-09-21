@@ -1,4 +1,4 @@
-package com.hofuri.cp.model.dto;
+package com.hofuri.cp.task.entity;
 
 import java.time.LocalDate;
 import lombok.AccessLevel;

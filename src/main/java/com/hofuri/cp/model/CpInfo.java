@@ -1,6 +1,6 @@
 package com.hofuri.cp.model;
 
-import com.hofuri.cp.model.dto.CpWebDto;
+import com.hofuri.cp.task.entity.CpWebDto;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Builder;

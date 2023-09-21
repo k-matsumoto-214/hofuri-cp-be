@@ -4,7 +4,7 @@ import com.hofuri.cp.config.HofuriWebConfig;
 import com.hofuri.cp.config.WebDriverConfig;
 import com.hofuri.cp.model.CpInfoList;
 import com.hofuri.cp.model.Paging;
-import com.hofuri.cp.model.dto.CpWebDto;
+import com.hofuri.cp.task.entity.CpWebDto;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
