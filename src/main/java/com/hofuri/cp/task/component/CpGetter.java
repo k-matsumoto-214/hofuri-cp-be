@@ -1,10 +1,10 @@
 package com.hofuri.cp.task.component;
 
-import com.hofuri.cp.config.HofuriWebConfig;
-import com.hofuri.cp.config.WebDriverConfig;
 import com.hofuri.cp.model.CpInfoList;
 import com.hofuri.cp.model.Paging;
 import com.hofuri.cp.task.entity.CpWebDto;
+import com.hofuri.cp.task.helper.HofuriWebHelper;
+import com.hofuri.cp.task.helper.WebDriverHelper;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CpGetter {
 
-  private final WebDriverConfig webDriverConfig;
-  private final HofuriWebConfig hofuriWebConfig;
+  private final WebDriverHelper webDriverHelper;
+  private final HofuriWebHelper hofuriWebHelper;
 
 
   /**
@@ -35,25 +35,25 @@ public class CpGetter {
     List<CpWebDto> cpWebDtos = new ArrayList<>();
 
     // seleniumドライバ取得
-    WebDriver webDriver = webDriverConfig.getWebDriver();
+    WebDriver webDriver = webDriverHelper.getWebDriver();
 
     try {
       //保振のページを開く
-      webDriver.get(hofuriWebConfig.firstCpPageUrl());
+      webDriver.get(hofuriWebHelper.getFirstCpPageUrl());
 
       // 残高更新日を取得
-      final By dateSelector = hofuriWebConfig.dateSelector();
+      final By dateSelector = hofuriWebHelper.getDateSelector();
       final String dateString = webDriver.findElement(dateSelector).getText();
-      final LocalDate date = hofuriWebConfig.parseDate(dateString);
+      final LocalDate date = hofuriWebHelper.parseDate(dateString);
 
       // CP件数を取得
-      final By cpNumberSelector = hofuriWebConfig.cpNumberSelector();
+      final By cpNumberSelector = hofuriWebHelper.getCpNumberSelector();
       final String cpNumberString = webDriver.findElement(cpNumberSelector).getText();
-      final int cpNumber = hofuriWebConfig.parseCpNumber(cpNumberString);
+      final int cpNumber = hofuriWebHelper.parseCpNumber(cpNumberString);
 
       log.info("取得対象CP件数: {} 件", cpNumber);
 
-      Paging paging = Paging.of(cpNumber, hofuriWebConfig.numberInPage());
+      Paging paging = Paging.of(cpNumber, hofuriWebHelper.getNumberInPage());
 
       log.info("取得ページ数: {}, 最終ページ要素数: {}",
           paging.maxPage(),
@@ -63,7 +63,7 @@ public class CpGetter {
       for (int pageNumber = 1; pageNumber <= paging.maxPage(); pageNumber++) {
         try {
           // 対象ページへ飛ぶ
-          webDriver.get(hofuriWebConfig.cpPageUrl(pageNumber));
+          webDriver.get(hofuriWebHelper.getCpPageUrl(pageNumber));
 
           // 一秒停止
           Thread.sleep(1000);
@@ -73,7 +73,7 @@ public class CpGetter {
               this.getCpInfoInPage(webDriver, paging.numberInSpecificPage(pageNumber), date));
 
         } catch (InterruptedException e) {
-          log.info("割り込み例外が発生 {}", e.toString());
+          log.error("割り込み例外が発生 {}", e.toString());
           Thread.currentThread().interrupt();
           throw new RuntimeException(e);
         }
@@ -102,33 +102,33 @@ public class CpGetter {
 
     List<CpWebDto> results = new ArrayList<>();
 
-    // 1ページに含まれる要素数分ループ（要素取得の際のカウントは0から）
-    for (int repeatNumber = 0; repeatNumber < numberInPage; repeatNumber++) {
+    // 1ページに含まれる要素数分ループ(1からスタートなのでloop条件は"<=")
+    for (int repeatNumber = 1; repeatNumber <= numberInPage; repeatNumber++) {
 
       // 発行体名の取得
       String name = webDriver
-          .findElement(hofuriWebConfig.nameSelector(repeatNumber))
+          .findElement(hofuriWebHelper.getNameSelector(repeatNumber))
           .getText();
 
       // ISINCodeの取得
       String isinCode = webDriver
-          .findElement(hofuriWebConfig.isinCodeSelector(repeatNumber))
+          .findElement(hofuriWebHelper.getIsinCodeSelector(repeatNumber))
           .getText();
 
       //発行体コードの取得
-      String issuerCode = hofuriWebConfig.parseIssuerCode(isinCode);
+      String issuerCode = hofuriWebHelper.parseIssuerCode(isinCode);
 
       // 各社債の金額取得
       String bondUnitString = webDriver
-          .findElement(hofuriWebConfig.bondUnitSelector(repeatNumber))
-          .getText();
-      int bondUnit = hofuriWebConfig.parseBondUnit(bondUnitString);
+          .findElement(hofuriWebHelper.getBondUnitSelector(repeatNumber))
+          .getAttribute("innerHTML");
+      int bondUnit = hofuriWebHelper.parseBondUnit(bondUnitString);
 
       // 発行総額の取得
       String amountString = webDriver
-          .findElement(hofuriWebConfig.amountSelector(repeatNumber))
-          .getText();
-      int amount = hofuriWebConfig.parseCpAmount(amountString);
+          .findElement(hofuriWebHelper.getAmountSelector(repeatNumber))
+          .getAttribute("innerHTML");
+      int amount = hofuriWebHelper.parseCpAmount(amountString);
 
       // CP情報のDTOを生成し結果配列に格納
       CpWebDto dto = CpWebDto.of(name, issuerCode, isinCode, bondUnit, amount, date);

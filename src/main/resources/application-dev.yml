@@ -9,6 +9,7 @@ server:
 
 selenium:
   host: ${SELENIUM_HOST}
+  options: --no-sandbox,--disable-gpu,--disable-dev-shm-usage
 
 cron:
   get-cp-balance: ${CRON_GET_CP_BALANCE}

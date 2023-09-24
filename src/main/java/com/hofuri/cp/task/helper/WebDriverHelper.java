@@ -1,24 +1,22 @@
-package com.hofuri.cp.config;
+package com.hofuri.cp.task.helper;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.List;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
-public class WebDriverConfig {
+@Component
+public class WebDriverHelper {
 
   @Value("${selenium.host}")
   private String seleniumHost;
 
-  // seleniumに渡すオプションを定義
-  private static final ChromeOptions chromeOptions = new ChromeOptions()
-      .addArguments("--no-sandbox", "--disable-dev-shm-usage")
-//      .addArguments("--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage")
-      .setHeadless(false);
+  @Value("${selenium.options}")
+  private List<String> options;
 
   private static final Duration DURATION_TIMEOUT_SECONDS = Duration.ofSeconds(30);
 
@@ -29,6 +27,8 @@ public class WebDriverConfig {
    */
   public RemoteWebDriver getWebDriver() {
     try {
+      // seleniumに渡すオプションを定義
+      ChromeOptions chromeOptions = new ChromeOptions().addArguments(options);
       RemoteWebDriver remoteWebDriver = new RemoteWebDriver(new URL(seleniumHost), chromeOptions);
       remoteWebDriver.manage().timeouts().implicitlyWait(DURATION_TIMEOUT_SECONDS);
       return remoteWebDriver;

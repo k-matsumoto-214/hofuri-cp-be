@@ -1,7 +1,7 @@
 package com.hofuri.cp.task.component
 
-import com.hofuri.cp.config.HofuriWebConfig
-import com.hofuri.cp.config.WebDriverConfig
+import com.hofuri.cp.task.helper.HofuriWebHelper
+import com.hofuri.cp.task.helper.WebDriverHelper
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.remote.RemoteWebDriver
@@ -21,10 +21,10 @@ class CpGetterSpec extends Specification {
     CpGetter cpGetter
 
     @SpringBean
-    HofuriWebConfig hofuriWebConfig = Mock()
+    HofuriWebHelper hofuriWebConfig = Mock()
 
     @SpringBean
-    WebDriverConfig webDriverConfig = Mock()
+    WebDriverHelper webDriverConfig = Mock()
 
     def "getCpInfoList_正常"() {
         setup:
@@ -38,19 +38,19 @@ class CpGetterSpec extends Specification {
                                     "name4", "isinCode4", "bondUnit", "amount"]
             }
         }
-        1 * hofuriWebConfig.firstCpPageUrl() >> "url"
-        1 * hofuriWebConfig.dateSelector() >> Mock(By)
+        1 * hofuriWebConfig.getFirstCpPageUrl() >> "url"
+        1 * hofuriWebConfig.getDateSelector() >> Mock(By)
         1 * hofuriWebConfig.parseDate(_) >> LocalDate.of(2099, 12, 10)
-        1 * hofuriWebConfig.cpNumberSelector() >> Mock(By)
+        1 * hofuriWebConfig.getCpNumberSelector() >> Mock(By)
         1 * hofuriWebConfig.parseCpNumber(_) >> 5
         1 * hofuriWebConfig.numberInPage() >> 3
-        2 * hofuriWebConfig.cpPageUrl(_) >> 1
-        5 * hofuriWebConfig.nameSelector(_) >> Mock(By)
-        5 * hofuriWebConfig.isinCodeSelector(_) >> Mock(By)
+        2 * hofuriWebConfig.getCpPageUrl(_) >> 1
+        5 * hofuriWebConfig.getNameSelector(_) >> Mock(By)
+        5 * hofuriWebConfig.getIsinCodeSelector(_) >> Mock(By)
         5 * hofuriWebConfig.parseIssuerCode(_) >> "issuer"
-        5 * hofuriWebConfig.bondUnitSelector(_) >> Mock(By)
+        5 * hofuriWebConfig.getBondUnitSelector(_) >> Mock(By)
         5 * hofuriWebConfig.parseBondUnit(_) >> 50
-        5 * hofuriWebConfig.amountSelector(_) >> Mock(By)
+        5 * hofuriWebConfig.getAmountSelector(_) >> Mock(By)
         5 * hofuriWebConfig.parseCpAmount(_) >> 500
 
         when:
@@ -73,7 +73,7 @@ class CpGetterSpec extends Specification {
     def "getCpInfoList_例外発生3回リトライ"() {
         setup:
         3 * webDriverConfig.getWebDriver() >> Mock(RemoteWebDriver)
-        3 * hofuriWebConfig.firstCpPageUrl() >> {
+        3 * hofuriWebConfig.getFirstCpPageUrl() >> {
             throw new RuntimeException()
         }
 
