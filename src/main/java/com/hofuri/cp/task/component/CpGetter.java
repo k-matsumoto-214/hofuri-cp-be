@@ -121,12 +121,14 @@ public class CpGetter {
       // 各社債の金額取得
       String bondUnitString = webDriver
           .findElement(hofuriWebHelper.getBondUnitSelector(repeatNumber))
+          // dd要素のためgetText()で要素が取得できないためgetAttributeを利用する
           .getAttribute("innerHTML");
       int bondUnit = hofuriWebHelper.parseBondUnit(bondUnitString);
 
       // 発行総額の取得
       String amountString = webDriver
           .findElement(hofuriWebHelper.getAmountSelector(repeatNumber))
+          // dd要素のためgetText()で要素が取得できないためgetAttributeを利用する
           .getAttribute("innerHTML");
       int amount = hofuriWebHelper.parseCpAmount(amountString);
 

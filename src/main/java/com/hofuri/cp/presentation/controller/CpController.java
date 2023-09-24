@@ -20,6 +20,8 @@ public class CpController {
 
   /**
    * 指定した期間の各発行体の日次残高を取得する
+   * <br>
+   * (フロントでグラフ表示・エクセル作成を前提に値を返却する)
    *
    * @param request 日次残高取得リクエスト
    * @return 指定した期間の各発行体の日次残高レスポンス
@@ -30,8 +32,10 @@ public class CpController {
     CpDailyAmountList cpDailyAmountList =
         cpFindService.fetchDailyCpAmountBetweenDate(request.getFrom(), request.getTo());
 
-    return CpDailyAmountResponse.from(cpDailyAmountList.getCpDailyAmounts());
+    return CpDailyAmountResponse.from(cpDailyAmountList.getDates(),
+        cpDailyAmountList.getCpDailyAmounts());
   }
+
 
   /**
    * 指定した期間の日次総発行残高を取得する

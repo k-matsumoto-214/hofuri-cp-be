@@ -14,6 +14,7 @@ import lombok.Getter;
 @Getter
 public class CpDailyAmountList {
 
+  private final List<LocalDate> dates;
   private final List<CpDailyAmount> cpDailyAmounts;
 
   /**
@@ -29,14 +30,27 @@ public class CpDailyAmountList {
         cpDailyAmountDtos.stream()
             .collect(Collectors.groupingBy(CpDailyAmountDto::getDate));
 
-    // 各日付でソートした上で各日付ごとの残高リストをもつドメインのリストを作成する
-    List<CpDailyAmount> cpDailyAmounts = cpDailyAmountDtosGroupingByDate.entrySet()
+    // 各発行体ごとに発行残高をグルーピング（発行残高がない日時は0が入っている）
+    Map<String, List<CpDailyAmountDto>> cpDailyAmountDtosGroupingByName =
+        cpDailyAmountDtos.stream()
+            .collect(Collectors.groupingBy(CpDailyAmountDto::getName));
+
+    // 1発行体でも残高のある日付リストを作成する
+    List<LocalDate> dates = cpDailyAmountDtosGroupingByDate.entrySet()
+        .stream()
+        .sorted(Entry.comparingByKey())
+        .map(Entry::getKey)
+        .collect(Collectors.toUnmodifiableList());
+
+    // 発行体ごとの発行残高リストを作成する
+    List<CpDailyAmount> cpDailyAmounts = cpDailyAmountDtosGroupingByName.entrySet()
         .stream()
         .sorted(Entry.comparingByKey())
         .map(entry -> CpDailyAmount.of(entry.getKey(), entry.getValue()))
         .collect(Collectors.toUnmodifiableList());
 
     return CpDailyAmountList.builder()
+        .dates(dates)
         .cpDailyAmounts(cpDailyAmounts)
         .build();
   }

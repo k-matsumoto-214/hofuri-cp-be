@@ -44,15 +44,18 @@ class CpControllerSpec extends Specification {
 
         1 * cpFindService.fetchDailyCpAmountBetweenDate(*_) >>
                 Mock(CpDailyAmountList) {
+                    getDates() >> List.of(
+                            LocalDate.of(2022, 12, 10),
+                            LocalDate.of(2022, 12, 11)
+                    )
                     getCpDailyAmounts() >> List.of(
                             Mock(CpDailyAmount) {
-                                getDate() >> LocalDate.of(2022, 12, 10)
-                                getAmountInfos() >> List.of(
-                                        Mock(CpDailyAmount.AmountInfo) {
-                                            getName() >> "test発行体"
-                                            getAmount() >> 5000
-                                        }
-                                )
+                                getIssureName() >> "test01"
+                                getAmounts() >> List.of(5000, 10000)
+                            },
+                            Mock(CpDailyAmount) {
+                                getIssureName() >> "test02"
+                                getAmounts() >> List.of(0, 500)
                             }
                     )
                 }
@@ -66,9 +69,7 @@ class CpControllerSpec extends Specification {
 
         then:
         actual.getContentAsString(StandardCharsets.UTF_8) ==
-                "{\"cpDailyAmountDatas\":" +
-                "[{\"date\":\"2022-12-10\"," +
-                "\"cpAmountData\":" + "[{\"name\":\"test発行体\",\"amount\":5000}]}]}"
+                "{\"dates\":[\"2022-12-10\",\"2022-12-11\"],\"cpDailyAmountDatas\":[{\"issureName\":\"test01\",\"amounts\":[5000,10000]},{\"issureName\":\"test02\",\"amounts\":[0,500]}]}"
     }
 
     def "GET: /cp/amount/daily_バリデーション_日付の期間が不正"() {

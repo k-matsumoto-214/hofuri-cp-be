@@ -31,11 +31,16 @@ class CpGetterSpec extends Specification {
         1 * webDriverConfig.getWebDriver() >> Mock(RemoteWebDriver) {
             findElement(_ as By) >> Mock(WebElement) {
                 2 * getText() >>> ["date", "cpNumber"]
-                20 * getText() >>> ["name0", "isinCode0", "bondUnit", "amount",
-                                    "name", "isinCode", "bondUnit", "amount",
-                                    "name", "isinCode", "bondUnit", "amount",
-                                    "name", "isinCode", "bondUnit", "amount",
-                                    "name4", "isinCode4", "bondUnit", "amount"]
+                10 * getText() >>> ["name0", "isinCode0",
+                                    "name", "isinCode",
+                                    "name", "isinCode",
+                                    "name", "isinCode",
+                                    "name4", "isinCode4"]
+                10 * getAttribute(_) >>> ["bondUnit", "amount",
+                                          "bondUnit", "amount",
+                                          "bondUnit", "amount",
+                                          "bondUnit", "amount",
+                                          "bondUnit", "amount"]
             }
         }
         1 * hofuriWebConfig.getFirstCpPageUrl() >> "url"
@@ -43,7 +48,7 @@ class CpGetterSpec extends Specification {
         1 * hofuriWebConfig.parseDate(_) >> LocalDate.of(2099, 12, 10)
         1 * hofuriWebConfig.getCpNumberSelector() >> Mock(By)
         1 * hofuriWebConfig.parseCpNumber(_) >> 5
-        1 * hofuriWebConfig.numberInPage() >> 3
+        1 * hofuriWebConfig.getNumberInPage() >> 3
         2 * hofuriWebConfig.getCpPageUrl(_) >> 1
         5 * hofuriWebConfig.getNameSelector(_) >> Mock(By)
         5 * hofuriWebConfig.getIsinCodeSelector(_) >> Mock(By)
@@ -78,7 +83,7 @@ class CpGetterSpec extends Specification {
         }
 
         when:
-        def actual = cpGetter.getCpInfoList()
+        cpGetter.getCpInfoList()
 
         then:
         thrown(RuntimeException)

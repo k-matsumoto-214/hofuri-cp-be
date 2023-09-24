@@ -15,6 +15,7 @@ public class WebDriverHelper {
   @Value("${selenium.host}")
   private String seleniumHost;
 
+  // selenium実行時のオプション文字列
   @Value("${selenium.options}")
   private List<String> options;
 

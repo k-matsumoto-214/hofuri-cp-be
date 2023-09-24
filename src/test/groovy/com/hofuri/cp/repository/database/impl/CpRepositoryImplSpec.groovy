@@ -40,12 +40,16 @@ class CpRepositoryImplSpec extends Specification {
 
         then:
         noExceptionThrown()
-        actual.getCpDailyAmounts().get(0).getDate() == from
-        actual.getCpDailyAmounts().get(0).getAmountInfos().get(0).amount == 15000
-        actual.getCpDailyAmounts().get(0).getAmountInfos().get(0).getName() == "アイエヌジーバンクエヌ・ヴイ"
-        actual.getCpDailyAmounts().get(2).getDate() == to
-        actual.getCpDailyAmounts().get(2).getAmountInfos().get(3).getAmount() == 0
-        actual.getCpDailyAmounts().get(2).getAmountInfos().get(3).getName() == "アサヒグループホールディングス株式会社"
+        actual.getDates() == List.of(
+                LocalDate.of(2022, 10, 21),
+                LocalDate.of(2022, 10, 24),
+                LocalDate.of(2022, 10, 25)
+        )
+        actual.getCpDailyAmounts().get(0).getIssureName() == "アイエヌジーバンクエヌ・ヴイ"
+        actual.getCpDailyAmounts().get(0).getAmounts() == List.of(15000, 15000, 15000)
+
+        actual.getCpDailyAmounts().get(3).getIssureName() == "アサヒグループホールディングス株式会社"
+        actual.getCpDailyAmounts().get(3).getAmounts() == List.of(10000, 10000, 0)
     }
 
     @DatabaseSetup(
