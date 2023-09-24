@@ -29,7 +29,7 @@ class CpControllerSpec extends Specification {
     CpFindService cpFindService = Mock()
 
     // Spring MVCのモック
-    MockMvc mockMvc;
+    MockMvc mockMvc
 
     def setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(cpController).build()
@@ -82,7 +82,7 @@ class CpControllerSpec extends Specification {
         0 * cpFindService.fetchDailyCpAmountBetweenDate(*_)
 
         when:
-        def actual = mockMvc.perform(request)
+        mockMvc.perform(request)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn()
@@ -102,7 +102,7 @@ class CpControllerSpec extends Specification {
         0 * cpFindService.fetchDailyCpAmountBetweenDate(*_)
 
         when:
-        def actual = mockMvc.perform(request)
+        mockMvc.perform(request)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn()
@@ -153,7 +153,7 @@ class CpControllerSpec extends Specification {
         0 * cpFindService.fetchTotalCpAmountBetweenDate(*_)
 
         when:
-        def actual = mockMvc.perform(request)
+        mockMvc.perform(request)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn()
@@ -173,7 +173,7 @@ class CpControllerSpec extends Specification {
         0 * cpFindService.fetchTotalCpAmountBetweenDate(*_)
 
         when:
-        def actual = mockMvc.perform(request)
+        mockMvc.perform(request)
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn()
