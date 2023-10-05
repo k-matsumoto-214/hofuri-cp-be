@@ -1,4 +1,4 @@
-# CP残高情報を閲覧できるWEBアプリ（https://hofuri.keismats.com/)
+# CP(短期社債)残高情報を閲覧できるWEBアプリ（https://hofuri.keismats.com/)
 
 ### 目的
 - [ほふり（証券保管振替機構）](https://www.jasdec.com/description/cp/cpmei.html?hakkoushaMei=&isinCode=&boshuuKubun=&hoshouKubun=&s=true)に掲載されているCP発行残高情報を収集する
