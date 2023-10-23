@@ -7,10 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@RestController
 public class GetCpBalanceTask {
 
   private final CpGetter cpGetter;
@@ -20,6 +23,7 @@ public class GetCpBalanceTask {
    * ほふりから日時のCP発行残高を取得してDBに登録する
    */
   @Scheduled(cron = "${cron.get-cp-balance}")
+  @GetMapping("/cp/amount/recovery/fetch")
   public void getCpBalance() {
     try {
       log.info("CP残高情報取得開始");
