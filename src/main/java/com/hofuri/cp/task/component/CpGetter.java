@@ -14,10 +14,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@RestController
 public class CpGetter {
 
   private final WebDriverHelper webDriverHelper;
@@ -30,6 +33,7 @@ public class CpGetter {
    * @return CP情報のリストドメイン
    */
   @Retryable
+  @GetMapping("/cp/amount/recovery/fetch")
   public CpInfoList getCpInfoList() {
     // 結果返却用のリストを定義
     List<CpWebDto> cpWebDtos = new ArrayList<>();
